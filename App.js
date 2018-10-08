@@ -1,30 +1,10 @@
 import React from 'react';
 import {View, Button, Text, ScrollView, StyleSheet, Switch} from 'react-native';
 import {Constants} from 'expo';
+import Todo from './Todo'
+import Timer from './Timer'
 
 let id = 0
-
-const styles = StyleSheet.create({
-  todoContainer: {
-    flexDirection: "row",
-    alignItems: "center"
-  },
-  appContainer: {
-    paddingTop: Constants.statusBarHeight,
-  },
-  fill: {
-    flex: 1,
-  }
-})
-
-const Todo = props => (
-  <View style={styles.todoContainer}>
-    <Switch value={props.todo.checked}
-    onValueChange={props.onToggle}/>
-    <Button onPress={props.onDelete} title="Delete" />
-    <Text>{props.todo.text}</Text>
-  </View>
-)
 
 export default class App extends React.Component {
   constructor() {
@@ -94,3 +74,16 @@ export default class App extends React.Component {
   }
 
 }
+
+const styles = StyleSheet.create({
+  todoContainer: {
+    flexDirection: "row",
+    alignItems: "center"
+  },
+  appContainer: {
+    paddingTop: Constants.statusBarHeight,
+  },
+  fill: {
+    flex: 1,
+  }
+})
