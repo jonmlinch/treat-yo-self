@@ -74,11 +74,15 @@ class TimerInput extends Component {
         console.log("Trying to run the count seconds")
         
         if (sec <= 0) {
-            sec = 59
-            this.setState({
-                seconds: sec
-            })
-            this.countMinutes()
+            if (hr === 0 && min === 0 && sec === 0){
+                this.stopTimer()
+            } else {
+                sec = 59
+                this.setState({
+                    seconds: sec
+                })
+                this.countMinutes()
+            }
         } else if (sec <= 10) {
             sec--
             this.setState({
@@ -118,18 +122,22 @@ class TimerInput extends Component {
         }
     }
 
-    render() {
+    render() {4
         return(
-            <View style={styles.timerContainer}>
-                <Text>Set a Timer:</Text>
-                <TextInput  style={styles.timerInput} placeholder='Hours' onChangeText={(hour) => this.updateHour(hour)} />
-                <TextInput style={styles.timerInput} placeholder='Minutes' onChangeText={(minute) => this.updateMin(minute)} />
-                <Timer 
-                    minutes={this.state.minute}
-                    hours={this.state.hour}
-                    seconds={this.state.seconds} />
-                <Button title="Start Time" onPress={() => this.startTimer()} />
-                <Button title="Stop Timer" onPress={() => this.stopTimer()} />
+            <View>
+                <View style={styles.timerContainer}>
+                    <Text style={styles.titles}>Set a Timer:</Text>
+                    <TextInput keyboardType='numeric' style={styles.timerInput} placeholder='Hours' onChangeText={(hour) => this.updateHour(hour)} />
+                    <TextInput keyboardType='numeric' style={styles.timerInput} placeholder='Minutes' onChangeText={(minute) => this.updateMin(minute)} />
+                    <Timer style={styles.title}
+                        minutes={this.state.minute}
+                        hours={this.state.hour}
+                        seconds={this.state.seconds} />
+                </View>
+                <View style={styles.timerContainer}>
+                    <Button style={styles.buttons} title="Start Time" onPress={() => this.startTimer()} />
+                    <Button style={styles.buttons} title="Stop Timer" onPress={() => this.stopTimer()} />
+                </View>
             </View>
         )
     }
@@ -141,7 +149,8 @@ export default TimerInput;
 
 const styles = StyleSheet.create({
     timerContainer: {
-        flexDirection: 'column',
+        flexDirection: 'row',
+        justifyContent: "space-between",
     },
     timerInput: {
         flexDirection: 'row',
@@ -149,5 +158,12 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         width: 80,
         margin: 10
+    },
+    titles : {
+        margin: 10
+    },
+    buttons: {
+        backgroundColor: 'blue',
+        color: 'white'
     }
   })

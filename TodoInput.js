@@ -8,7 +8,9 @@ export default class App extends Component {
     return (
       <View>
         <TextInput style={styles.input} value={this.props.todoItem.text} onChangeText={this.props.changeText} clearButtonMode="always" />
-        <Button onPress={this.props.addItem} title="Add item" />
+        <View style={styles.bottomButton}>
+            <Button onPress={this.props.addItem} title="Add item" style={styles.bottomButton} />
+        </View>
       </View>
     )
 
@@ -30,5 +32,11 @@ const styles = StyleSheet.create({
   input: {
     borderColor: 'black',
     borderWidth: 1,
+    height: 40,
+    padding: 10,
+    margin: 10
+  },
+  bottomButton: {
+    margin: 50,
   }
 })

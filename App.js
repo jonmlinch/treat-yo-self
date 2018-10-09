@@ -66,11 +66,6 @@ export default class App extends Component {
             this.state.todos.filter(todo => !todo.checked).length
           }
         </Text>
-        <TimerInput />
-        <TodoInput 
-          addItem={() => this.addToDo()} 
-          todoItem={this.state} 
-          changeText={(text) => this.setState({text})} />
         <ScrollView>
           {this.state.todos.map(todo => ( 
             <Task 
@@ -81,6 +76,11 @@ export default class App extends Component {
             />
           ))}
         </ScrollView>
+        <TimerInput />
+        <TodoInput 
+          addItem={() => this.addToDo()} 
+          todoItem={this.state} 
+          changeText={(text) => this.setState({text})} />
       </View>
     )
 
@@ -102,5 +102,5 @@ const styles = StyleSheet.create({
   input: {
     borderColor: 'black',
     borderWidth: 1,
-  }
+  },
 })
