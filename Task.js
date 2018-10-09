@@ -77,6 +77,86 @@ export default class Task extends Component{
     }
   }
 
+  startTimer = () => {
+    console.log("one")
+    this.timer = setInterval(this.countSeconds, 10)  
+  }
+
+  stopTimer = () => {
+    clearInterval(this.timer)
+  }
+
+  countHours = () => {
+    if (hr <= 0) {
+        this.setState({
+            hours: "00"
+        })
+    } else if (hr <= 10) {
+        hr--
+        this.setState({
+            hours: "0" + hr
+        })
+    } else {
+        hr--
+        this.setState({
+            hours: hr
+        })
+    }
+  }
+
+  countMinutes = () => {
+    if (min <= 0) {
+        if (hr > 0){
+            min = 59
+            this.setState({
+                minutes: min
+            })
+        } else {
+            this.setState({
+                minutes: "00"
+            })
+        }
+        this.countHours()
+    } else if (min <= 10) {
+        min--
+        this.setState({
+            minutes: "0" + min
+        })
+    } else {
+        min--
+        this.setState({
+            minutes: min
+        })
+    }
+  }
+
+
+  countSeconds = () => {
+    console.log("Trying to run the count seconds")
+    
+    if (sec <= 0) {
+      if (hr === 0 && min === 0 && sec === 0){
+          this.stopTimer()
+      } else {
+          sec = 59
+          this.setState({
+              seconds: sec
+          })
+          this.countMinutes()
+      }
+    } else if (sec <= 10) {
+        sec--
+        this.setState({
+            seconds: "0" + sec
+        })
+    } else {
+        sec--
+        this.setState({
+            seconds: sec
+        })
+    }
+  }
+
 
   render() {
     return (
@@ -86,6 +166,8 @@ export default class Task extends Component{
         <Button onPress={this.props.onDelete} title="Delete" />
         <Text>{this.props.todo.text} </Text>
         <Text> {this.state.hours} : {this.state.minutes} : {this.state.seconds} </Text>
+        <Button title="Start Time" onPress={() => this.startTimer()} />
+        <Button title="Stop Timer" onPress={() => this.stopTimer()} />
     </View>
     )
   }
