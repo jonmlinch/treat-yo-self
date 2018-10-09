@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import {View, Button, Text, TextInput, ScrollView, StyleSheet} from 'react-native';
 import {Constants} from 'expo';
-import Task from './Task'
-import Timer from './Timer'
+import Task from './Task';
+import TodoInput from './TodoInput';
+import Timer from './Timer';
 
 let id = 0
 
@@ -65,9 +66,11 @@ export default class App extends Component {
             this.state.todos.filter(todo => !todo.checked).length
           }
         </Text>
-        <TextInput style={styles.input} value={this.state.text} onChangeText={(text) => this.setState({text})} clearButtonMode="always" />
-        <Button onPress={() => this.addToDo()} title="Add item" />
-        <ScrollView style={styles.fill} >
+        <TodoInput 
+          addItem={() => this.addToDo()} 
+          todoItem={this.state} 
+          changeText={(text) => this.setState({text})} />
+        <ScrollView>
           {this.state.todos.map(todo => ( 
             <Task 
               onToggle={() => this.toggleToDo(todo.id)}
