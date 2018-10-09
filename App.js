@@ -4,6 +4,7 @@ import {Constants} from 'expo';
 import Task from './Task';
 import TodoInput from './TodoInput';
 import TimerInput from './TimerInput';
+import Timer from './Timer'
 
 let id = 0
 
@@ -12,26 +13,35 @@ export default class App extends Component {
     super()
     this.state = {
       todos: [],
-      text: ''
+      text: '',
+      hr: '',
+      min: '',
+      sec: 0
     }
   }
 
   submitAndClear = () => {
     this.setState({
-      text: ''
+      text: '',
+      hr: '',
+      min: '',
+      sec: ''
     })
   }
 
   addToDo() {
     id++
     const text = this.state.text
+    const hr = this.state.hr
+    const min = this.state.min
+    const sec = this.state.sec
     this.setState({
       todos: [
-        ...this.state.todos, {id: id, text: text, checked: false}
+        ...this.state.todos, {id: id, text: text, checked: false, min: min, hr: hr, sec: sec}
       ],
     })
     this.submitAndClear()
-    console.log("THE CURRENT STATE IS:", this.state.text)
+    console.log("THE CURRENT STATE IS:", this.state.timer)
   }
 
   removeToDo(id) {
@@ -43,11 +53,14 @@ export default class App extends Component {
   toggleToDo(id) {
     this.setState({
       todos: this.state.todos.map(todo => {
-        if (todo.task.id !== id) return todo
+        if (todo.id !== id) return todo
         return {
           id: todo.id,
           text: todo.text,
-          checked: !todo.checked
+          checked: !todo.checked,
+          hr: todo.hr,
+          min: todo.min,
+          sec: todo.sec,
         }
       })
     })
@@ -68,19 +81,22 @@ export default class App extends Component {
         </Text>
         <ScrollView>
           {this.state.todos.map(todo => ( 
-            <Task 
-              onToggle={() => this.toggleToDo(todo.id)}
-              onDelete={() => this.removeToDo(todo.id)}
-              todo={todo}
-              key={todo.id}
-            />
+            <View>
+              <Task 
+                onToggle={() => this.toggleToDo(todo.id)}
+                onDelete={() => this.removeToDo(todo.id)}
+                todo={todo}
+                key={todo.id}
+              />
+            </View>
           ))}
         </ScrollView>
-        <TimerInput />
         <TodoInput 
           addItem={() => this.addToDo()} 
           todoItem={this.state} 
-          changeText={(text) => this.setState({text})} />
+          changeText={(text) => this.setState({text})}
+          updateMin={(min) => this.setState({min})}
+          updateHour={(hr) => this.setState({hr})} />
       </View>
     )
 

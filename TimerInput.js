@@ -96,39 +96,39 @@ class TimerInput extends Component {
         }
     }
 
-    updateMin = (input) => {
-        min = input
-        if (min < 10){
-            this.setState({
-                minute: "0" + min
-            })
-        } else {
-            this.setState({
-                minute: min
-            })
-        }
-    }
+    // updateMin = (input) => {
+    //     min = input
+    //     if (min < 10){
+    //         this.setState({
+    //             minute: "0" + min
+    //         })
+    //     } else {
+    //         this.setState({
+    //             minute: min
+    //         })
+    //     }
+    // }
 
-    updateHour = (input) => {
-        hr = input
-        if (hr < 10) {
-            this.setState({
-                hour: "0" + hr
-            })
-        } else {
-            this.setState({
-                hour: hr
-            })
-        }
-    }
+    // updateHour = (input) => {
+    //     hr = input
+    //     if (hr < 10) {
+    //         this.setState({
+    //             hour: "0" + hr
+    //         })
+    //     } else {
+    //         this.setState({
+    //             hour: hr
+    //         })
+    //     }
+    // }
 
     render() {4
         return(
             <View>
                 <View style={styles.timerContainer}>
                     <Text style={styles.titles}>Set a Timer:</Text>
-                    <TextInput keyboardType='numeric' style={styles.timerInput} placeholder='Hours' onChangeText={(hour) => this.updateHour(hour)} />
-                    <TextInput keyboardType='numeric' style={styles.timerInput} placeholder='Minutes' onChangeText={(minute) => this.updateMin(minute)} />
+                    <TextInput keyboardType='numeric' style={styles.timerInput} placeholder='Hours' onChangeText={this.props.updateHour} />
+                    <TextInput keyboardType='numeric' style={styles.timerInput} placeholder='Minutes' onChangeText={this.props.updateMin} />
                     <Timer style={styles.title}
                         minutes={this.state.minute}
                         hours={this.state.hour}
