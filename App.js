@@ -3,7 +3,7 @@ import {View, Button, Text, TextInput, ScrollView, StyleSheet} from 'react-nativ
 import {Constants} from 'expo';
 import Task from './Task';
 import TodoInput from './TodoInput';
-import Timer from './Timer';
+import TimerInput from './TimerInput';
 
 let id = 0
 
@@ -66,6 +66,7 @@ export default class App extends Component {
             this.state.todos.filter(todo => !todo.checked).length
           }
         </Text>
+        <TimerInput />
         <TodoInput 
           addItem={() => this.addToDo()} 
           todoItem={this.state} 
