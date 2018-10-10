@@ -62,6 +62,7 @@ export default class App extends Component {
         }
       })
     })
+    this.updateTask()
   }
 
   updateHour = (hr) => {
@@ -86,9 +87,31 @@ export default class App extends Component {
 
   updateTask = () => {
     console.log("The task is currently", this.state.task)
+    let next = this.state.task
+    let found = false
+    while (!found){
+      if (next <= this.state.todos.length) {
+        next++
+        console.log("NEXT is", next)
+        found = this.state.todos.some(val => val.id === next)
+        console.log('FOUND is', found)
+      } else {
+        break
+      }
+      
+    }
     this.setState({
-      task: this.state.task + 1
+      task: next
     })
+    // if (this.state.task === this.state.todos.length) {
+    //   this.setState({
+    //     task: this.state.task
+    //   })
+    // } else {
+    //   this.setState({
+    //     task: this.state.task + 1
+    //   })
+    // }
     console.log("The task is currently", this.state.task)
   }
 
@@ -99,11 +122,12 @@ export default class App extends Component {
         task: this.state.task + 1
       })
     } else {
+      console.log("The starting task is", this.state.task)
       this.setState({
-        tast: this.state.task
+        task: this.state.task + 1
       })
     }
-    
+  
   }
 
   render() {
