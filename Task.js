@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
 import {View, Button, Text, StyleSheet, Switch} from 'react-native';
 import {Constants} from 'expo';
-import Timer from './Timer'
 
-let hr = 0
-let min = 0
-let sec = 0
 
 export default class Task extends Component{
   constructor(props){
@@ -13,7 +9,7 @@ export default class Task extends Component{
     this.state = {
       hours: '',
       minutes: '',
-      seconds: ''
+      seconds: '',
     }
   }
 
@@ -23,8 +19,14 @@ export default class Task extends Component{
     this.setSec()
   }
 
+  componentDidUpdate(prevProps){
+    if (prevProps.task !== this.props.task){
+      this.startTimer()
+    }
+  }
+
   setHr = () =>{
-    hr = this.props.todo.hr
+    let hr = this.props.todo.hr
     if (this.props.todo.hr < 10){
       this.setState({
         hours: "0" + hr
@@ -42,7 +44,7 @@ export default class Task extends Component{
   }
 
   setMin = () =>{
-    min = this.props.todo.min
+    let min = this.props.todo.min
     if (this.props.todo.min < 10){
       this.setState({
         minutes: "0" + min
@@ -60,7 +62,7 @@ export default class Task extends Component{
   }
 
   setSec = () =>{
-    sec = this.props.todo.sec
+    let sec = this.props.todo.sec
     if (this.props.todo.sec < 10){
       this.setState({
         seconds: "0" + sec
@@ -72,21 +74,28 @@ export default class Task extends Component{
     } else {
       sec = 0
       this.setState({
-        seconds: sec
+        seconds: "0" + sec
       })
     }
   }
 
   startTimer = () => {
-    console.log("one")
-    this.timer = setInterval(this.countSeconds, 10)  
+    console.log("This item thinks the task number is", this.props.task)
+    console.log("The item thinks the id is", this.props.todo.id)
+    if (this.props.todo.id === this.props.task){
+      console.log("one")
+      this.timer = setInterval(this.countSeconds, 10)
+    }  
   }
 
   stopTimer = () => {
+    console.log("timer was stopped")
     clearInterval(this.timer)
   }
 
   countHours = () => {
+    let hr = this.state.hours
+    console.log('The hour is', hr)
     if (hr <= 0) {
         this.setState({
             hours: "00"
@@ -105,6 +114,9 @@ export default class Task extends Component{
   }
 
   countMinutes = () => {
+    let min = this.state.minutes
+    let hr = this.state.hours
+    console.log('the min is', min)
     if (min <= 0) {
         if (hr > 0){
             min = 59
@@ -132,10 +144,12 @@ export default class Task extends Component{
 
 
   countSeconds = () => {
-    console.log("Trying to run the count seconds")
-    
+    let sec = this.state.seconds
+    let min = this.state.minutes
+    let hr = this.state.hours
     if (sec <= 0) {
-      if (hr === 0 && min === 0 && sec === 0){
+      if (hr == 0 && min == 0 && sec == 0){
+          this.props.updateTask()
           this.stopTimer()
       } else {
           sec = 59
@@ -147,7 +161,7 @@ export default class Task extends Component{
     } else if (sec <= 10) {
         sec--
         this.setState({
-            seconds: "0" + sec
+            seconds: '0' + sec
         })
     } else {
         sec--

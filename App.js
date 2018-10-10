@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import {View, Button, Text, TextInput, ScrollView, StyleSheet} from 'react-native';
+import {View, Button, KeyboardAvoidingView, Text, TextInput, ScrollView, StyleSheet} from 'react-native';
 import {Constants} from 'expo';
 import Task from './Task';
 import TodoInput from './TodoInput';
-import TimerInput from './TimerInput';
-import Timer from './Timer'
 
 let id = 0
 
@@ -14,18 +12,19 @@ export default class App extends Component {
     this.state = {
       todos: [],
       text: '',
-      hr: '',
-      min: '',
-      sec: 0
+      hr: 0,
+      min: 0,
+      sec: 0,
+      task: 0
     }
   }
 
   submitAndClear = () => {
     this.setState({
       text: '',
-      hr: '',
-      min: '',
-      sec: ''
+      hr: 0,
+      min: 0,
+      sec: 0,
     })
   }
 
@@ -41,7 +40,6 @@ export default class App extends Component {
       ],
     })
     this.submitAndClear()
-    console.log("THE CURRENT STATE IS:", this.state.timer)
   }
 
   removeToDo(id) {
@@ -66,6 +64,48 @@ export default class App extends Component {
     })
   }
 
+  updateHour = (hr) => {
+    if(hr){
+      this.setState({hr})
+    } else {
+      this.setState({
+        hr: 0
+      })
+    }
+  }
+
+  updateMinute = (min) => {
+    if (min) {
+      this.setState({min})
+    } else {
+      this.setState({
+        min: 0
+      })
+    }
+  }
+
+  updateTask = () => {
+    console.log("The task is currently", this.state.task)
+    this.setState({
+      task: this.state.task + 1
+    })
+    console.log("The task is currently", this.state.task)
+  }
+
+  startTask = () =>{
+    if (this.state.task === 0){
+      console.log("The starting task is", this.state.task)
+      this.setState({
+        task: this.state.task + 1
+      })
+    } else {
+      this.setState({
+        tast: this.state.task
+      })
+    }
+    
+  }
+
   render() {
     return (
       <View style={[styles.appContainer, styles.fill]}>
@@ -79,14 +119,17 @@ export default class App extends Component {
             this.state.todos.filter(todo => !todo.checked).length
           }
         </Text>
+        <Button title="Begin" onPress={() => this.startTask()} />
         <ScrollView>
           {this.state.todos.map(todo => ( 
             <View>
               <Task 
                 onToggle={() => this.toggleToDo(todo.id)}
                 onDelete={() => this.removeToDo(todo.id)}
+                updateTask={() => this.updateTask()}
                 todo={todo}
                 key={todo.id}
+                task={this.state.task}
               />
             </View>
           ))}
@@ -95,8 +138,9 @@ export default class App extends Component {
           addItem={() => this.addToDo()} 
           todoItem={this.state} 
           changeText={(text) => this.setState({text})}
-          updateMin={(min) => this.setState({min})}
-          updateHour={(hr) => this.setState({hr})} />
+          updateMin={(min) => this.updateMinute(min)}
+          updateHour={(hr) => this.updateHour(hr)}
+           />
       </View>
     )
 

@@ -1,24 +1,24 @@
 import React, { Component } from 'react';
-import {View, Button, TextInput, Text, StyleSheet} from 'react-native';
+import {KeyboardAvoidingView, Button, TextInput, Text, StyleSheet, View} from 'react-native';
 import {Constants} from 'expo';
 
 export default class App extends Component {
   
   render() {
     return (
-      <View>
+      <KeyboardAvoidingView behavior='padding'>
         <Text style={styles.titles}>Set a Timer:</Text>
 
-        <TextInput keyboardType='numeric' style={styles.timerInput} placeholder='Hours' value={this.props.todoItem.hr} onChangeText={this.props.updateHour} />
+        <TextInput keyboardType='numeric' style={styles.timerInput} placeholder='Hours' value={this.props.todoItem.hr} onChangeText={this.props.updateHour} controlled={true} />
 
-        <TextInput keyboardType='numeric' style={styles.timerInput} placeholder='Minutes' value={this.props.todoItem.min} onChangeText={this.props.updateMin} />
+        <TextInput keyboardType='numeric' style={styles.timerInput} placeholder='Minutes' value={this.props.todoItem.min} onChangeText={this.props.updateMin} controlled={true} />
 
         <TextInput style={styles.input} value={this.props.todoItem.text} onChangeText={this.props.changeText} clearButtonMode="always" />
 
         <View style={styles.bottomButton}>
             <Button onPress={this.props.addItem} title="Add item" style={styles.bottomButton} />
         </View>
-      </View>
+      </KeyboardAvoidingView>
     )
 
   }
