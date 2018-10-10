@@ -3,7 +3,7 @@ import {View, Button, Text, StyleSheet, Switch} from 'react-native';
 import {Constants} from 'expo';
 
 
-export default class Task extends Component{
+export default class Task extends Component {
   constructor(props){
     super(props)
     this.state = {
@@ -20,8 +20,12 @@ export default class Task extends Component{
   }
 
   componentDidUpdate(prevProps){
-    if (prevProps.task !== this.props.task){
-      this.startTimer()
+    if (prevProps.stop !== this.props.stop){
+      if(this.props.start === true){
+        this.startTimer()
+      } else {
+      this.stopTimer()
+      }
     }
   }
 
@@ -85,7 +89,9 @@ export default class Task extends Component{
     if (this.props.todo.id === this.props.task){
       console.log("one")
       this.timer = setInterval(this.countSeconds, 10)
-    }  
+    } else {
+      console.log("not a match")
+    }
   }
 
   stopTimer = () => {
@@ -149,8 +155,8 @@ export default class Task extends Component{
     let hr = this.state.hours
     if (sec <= 0) {
       if (hr == 0 && min == 0 && sec == 0){
-          this.props.updateTask()
           this.stopTimer()
+          this.props.updateTask()
       } else {
           sec = 59
           this.setState({
@@ -180,12 +186,11 @@ export default class Task extends Component{
         <Button onPress={this.props.onDelete} title="Delete" />
         <Text>{this.props.todo.text} </Text>
         <Text> {this.state.hours} : {this.state.minutes} : {this.state.seconds} </Text>
-        <Button title="Start Time" onPress={() => this.startTimer()} />
-        <Button title="Stop Timer" onPress={() => this.stopTimer()} />
     </View>
     )
   }
-} 
+}
+
 
   const styles = StyleSheet.create({
     todoContainer: {

@@ -15,7 +15,9 @@ export default class App extends Component {
       hr: 0,
       min: 0,
       sec: 0,
-      task: 0
+      task: 0,
+      stop: true,
+      start: false
     }
   }
 
@@ -95,39 +97,41 @@ export default class App extends Component {
         console.log("NEXT is", next)
         found = this.state.todos.some(val => val.id === next)
         console.log('FOUND is', found)
-      } else {
-        break
-      }
+      } 
       
     }
     this.setState({
-      task: next
+      task: next,
+      stop: true,
     })
-    // if (this.state.task === this.state.todos.length) {
-    //   this.setState({
-    //     task: this.state.task
-    //   })
-    // } else {
-    //   this.setState({
-    //     task: this.state.task + 1
-    //   })
-    // }
-    console.log("The task is currently", this.state.task)
+    console.log("Now the task is", this.state.task)
   }
 
   startTask = () =>{
     if (this.state.task === 0){
-      console.log("The starting task is", this.state.task)
+      console.log("The starting task was", this.state.task)
       this.setState({
-        task: this.state.task + 1
+        task: this.state.task + 1,
+        stop: !this.state.stop,
+        start: !this.state.start
       })
     } else {
       console.log("The starting task is", this.state.task)
       this.setState({
-        task: this.state.task + 1
+        task: this.state.task,
+        stop: !this.state.stop,
+        start: !this.state.start
       })
     }
   
+  }
+
+  stopTimer = () => {
+    this.setState({
+      //task: this.state.task,
+      stop: !this.state.stop,
+      start: !this.state.start
+    })
   }
 
   render() {
@@ -144,6 +148,7 @@ export default class App extends Component {
           }
         </Text>
         <Button title="Begin" onPress={() => this.startTask()} />
+        <Button title="Stop" onPress={() => this.stopTimer()} />
         <ScrollView>
           {this.state.todos.map(todo => ( 
             <View>
@@ -154,6 +159,8 @@ export default class App extends Component {
                 todo={todo}
                 key={todo.id}
                 task={this.state.task}
+                stop={this.state.stop}
+                start={this.state.start}
               />
             </View>
           ))}
