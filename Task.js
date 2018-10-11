@@ -4,6 +4,8 @@ import {Card, Text} from 'react-native-elements'
 import {Constants} from 'expo';
 import TodoTask from './TodoTask'
 import DoneTask from './DoneTask'
+import UnfinishedTask from './UnfinishedTask'
+
 
 export default class Task extends Component {
   constructor(props){
@@ -12,7 +14,6 @@ export default class Task extends Component {
       hours: '',
       minutes: '',
       seconds: '',
-      todo: this.props.todo
     }
   }
 
@@ -25,14 +26,17 @@ export default class Task extends Component {
   componentDidUpdate(prevProps){
     if (prevProps.stop !== this.props.stop){
       if(this.props.start === true){
+        console.log('STARTING')
         this.startTimer()
       } else {
-      this.stopTimer()
+        console.log('STOPPING?')
+        this.stopTimer()
       }
     }
   }
 
   setHr = () =>{
+    console.log("sethr function")
     let hr = this.props.todo.hr
     if (this.props.todo.hr < 10){
       this.setState({
@@ -51,6 +55,7 @@ export default class Task extends Component {
   }
 
   setMin = () =>{
+    console.log('setmin function')
     let min = this.props.todo.min
     if (this.props.todo.min < 10){
       this.setState({
@@ -69,6 +74,7 @@ export default class Task extends Component {
   }
 
   setSec = () =>{
+    console.log('set sec function')
     let sec = this.props.todo.sec
     if (this.props.todo.sec < 10){
       this.setState({
@@ -92,9 +98,11 @@ export default class Task extends Component {
     if (this.props.todo.id === this.props.task){
       if (this.props.todo.checked === true){
         this.stopTimer()
+        this.props.updateTask()
       } else {
         this.timer = setInterval(this.countSeconds, 10)
-      }
+        console.log('done with setInterval')
+     }
     } else {
       console.log("not a match")
     }
@@ -155,11 +163,17 @@ export default class Task extends Component {
 
 
   countSeconds = () => {
+    console.log('countseconds function')
     let sec = this.state.seconds
     let min = this.state.minutes
     let hr = this.state.hours
-    if (sec <= 0) {
-      if (hr == 0 && min == 0 && sec == 0){
+    console.log("Sec", sec)
+    console.log("Min", min)
+    console.log("Hr", hr)
+    if (sec < 1) {
+      console.log('if')
+      if (hr <= 0 && min <= 0){
+        console.log('everything is 0')
           this.stopTimer()
           this.props.updateTask()
       } else {
@@ -170,21 +184,37 @@ export default class Task extends Component {
           this.countMinutes()
       }
     } else if (sec <= 10) {
-        sec--
-        this.setState({
-            seconds: '0' + sec
-        })
+      console.log('else if') 
+      sec--
+      console.log(sec)
+      this.setState({
+          seconds: '0' + sec
+      })
+      console.log('The state', this.state)
     } else {
-        sec--
-        this.setState({
-            seconds: sec
-        })
+      console.log('else')
+      sec--
+      this.setState({
+          seconds: sec
+      })
+      console.log('else this.state', this.state)
     }
+    console.log('end of countSeconds', this.state)
   }
 
 
   render() {
-    if (this.props.todo.checked) {
+    if (this.state.hours == 0 && this.state.minutes == 0 && this.state.seconds == 0 && !this.props.todo.checked) {
+      this.stopTimer()
+      return (
+        <View>
+          <UnfinishedTask 
+            todo={this.props.todo}
+            onDelete={this.props.onDelete}
+            />
+        </View>
+      )
+    } else if (this.props.todo.checked) {
       return (
         <View>
           <DoneTask 
@@ -198,9 +228,11 @@ export default class Task extends Component {
         <TodoTask 
         todo={this.props.todo}
         hours={this.state.hours}
-        minutes={this.state.minutes}seconds={this.state.seconds}
+        minutes={this.state.minutes}
+        seconds={this.state.seconds}
         onToggle={this.props.onToggle}
-        onDelete={this.props.onDelete}/>
+        onDelete={this.props.onDelete}
+        stopTimer={() => this.stopTimer()} />
       </View>
     )
   }

@@ -64,10 +64,12 @@ export default class App extends Component {
           sec: 0,
         }
       }),
+      task: this.state.task + 1
     })
   }
 
   updateHour = (hr) => {
+    console.log('updatehr function')
     if(hr){
       this.setState({hr})
     } else {
@@ -78,6 +80,7 @@ export default class App extends Component {
   }
 
   updateMinute = (min) => {
+    console.log('updatemin function')
     if (min) {
       this.setState({min})
     } else {
@@ -109,22 +112,24 @@ export default class App extends Component {
 
   startTask = () =>{
     console.log("YOU'VE ENTERED THE STARTTASK FUNCTION")
-    if (this.state.task === 0){
-      console.log("The starting task was", this.state.task)
-      this.setState({
-        task: this.state.task + 1,
-        stop: !this.state.stop,
-        start: !this.state.start
-      })
-    } else {
-      console.log("The starting task is", this.state.task)
-      this.setState({
-        task: this.state.task,
-        stop: !this.state.stop,
-        start: !this.state.start
-      })
+    if (this.state.todos.length > 0) {
+      if (this.state.task === 0){
+        console.log("The starting task was", this.state.task)
+        this.setState({
+          task: this.state.task + 1,
+          stop: !this.state.stop,
+          start: !this.state.start
+        })
+      } else {
+        console.log("The starting task is", this.state.task)
+        this.setState({
+          task: this.state.task,
+          stop: !this.state.stop,
+          start: !this.state.start
+        })
+      }
+
     }
-  
   }
 
   stopTimer = () => {
@@ -150,7 +155,7 @@ export default class App extends Component {
           </Text>
         </View>
         <View style={styles.todoContainer}>
-          <Button title="Begin" buttonStyle={styles.buttons} onPress={() => this.startTask()} />
+          <Button title="Start" buttonStyle={styles.buttons} onPress={() => this.startTask()} />
           <Button title="Stop" buttonStyle={styles.buttons} onPress={() => this.stopTimer()} />
         </View>
         <ScrollView>

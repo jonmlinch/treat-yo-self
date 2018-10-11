@@ -7,7 +7,7 @@ const DoneTask = (props) => {
     return (
         <View style={styles.todoContainer}>
             <Text style={styles.task}>{props.todo.text}</Text>
-            <Icon name="check-circle-o" type="font-awesome"  iconStyle={styles.checkMark} size={30} />
+            <Icon name="times-circle-o" type="font-awesome"  iconStyle={styles.checkMark} size={30} onPress={props.onDelete} />
         </View>
     )
 }
@@ -23,8 +23,8 @@ export default DoneTask;
       justifyContent: "space-between",
       borderRadius: 10,
       height: 60,
-      backgroundColor: 'green',
-      margin:10
+      backgroundColor: 'red',
+      margin: 10
     },
     task: {
       fontSize: 20,
