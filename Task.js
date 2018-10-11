@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import {View, Button, Text, StyleSheet, Switch} from 'react-native';
+import {View, Button, StyleSheet, Switch} from 'react-native';
+import {Card, Text} from 'react-native-elements'
 import {Constants} from 'expo';
-
+import TodoTask from './TodoTask'
+import DoneTask from './DoneTask'
 
 export default class Task extends Component {
   constructor(props){
@@ -10,6 +12,7 @@ export default class Task extends Component {
       hours: '',
       minutes: '',
       seconds: '',
+      todo: this.props.todo
     }
   }
 
@@ -87,8 +90,11 @@ export default class Task extends Component {
     console.log("This item thinks the task number is", this.props.task)
     console.log("The item thinks the id is", this.props.todo.id)
     if (this.props.todo.id === this.props.task){
-      console.log("one")
-      this.timer = setInterval(this.countSeconds, 10)
+      if (this.props.todo.checked === true){
+        this.stopTimer()
+      } else {
+        this.timer = setInterval(this.countSeconds, 10)
+      }
     } else {
       console.log("not a match")
     }
@@ -122,7 +128,6 @@ export default class Task extends Component {
   countMinutes = () => {
     let min = this.state.minutes
     let hr = this.state.hours
-    console.log('the min is', min)
     if (min <= 0) {
         if (hr > 0){
             min = 59
@@ -179,14 +184,24 @@ export default class Task extends Component {
 
 
   render() {
+    if (this.props.todo.checked) {
+      return (
+        <View>
+          <DoneTask 
+            todo={this.props.todo}
+            />
+        </View>
+      )
+    }
     return (
-      <View style={styles.todoContainer}>
-        <Switch value={this.props.todo.checked}
-        onValueChange={this.props.onToggle}/>
-        <Button onPress={this.props.onDelete} title="Delete" />
-        <Text>{this.props.todo.text} </Text>
-        <Text> {this.state.hours} : {this.state.minutes} : {this.state.seconds} </Text>
-    </View>
+      <View>
+        <TodoTask 
+        todo={this.props.todo}
+        hours={this.state.hours}
+        minutes={this.state.minutes}seconds={this.state.seconds}
+        onToggle={this.props.onToggle}
+        onDelete={this.props.onDelete}/>
+      </View>
     )
   }
 }
@@ -195,6 +210,16 @@ export default class Task extends Component {
   const styles = StyleSheet.create({
     todoContainer: {
       flexDirection: "row",
-      alignItems: "center"
+      justifyContent: "space-between",
+    },
+    clock: {
+      flexDirection: "row",
+      justifyContent: "center",
+      marginLeft: 80
+    },
+    cardContainer: {
+      flexDirection: "row",
+      borderRadius: 10,
+      height: 150
     }
   })

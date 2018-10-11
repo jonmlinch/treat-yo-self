@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import {View, Button, KeyboardAvoidingView, Text, TextInput, ScrollView, StyleSheet} from 'react-native';
+import {View, Text, ScrollView, StyleSheet} from 'react-native';
+import {Button} from 'react-native-elements'
 import {Constants} from 'expo';
 import Task from './Task';
 import TodoInput from './TodoInput';
@@ -58,13 +59,12 @@ export default class App extends Component {
           id: todo.id,
           text: todo.text,
           checked: !todo.checked,
-          hr: todo.hr,
-          min: todo.min,
-          sec: todo.sec,
+          hr: 0,
+          min: 0,
+          sec: 0,
         }
-      })
+      }),
     })
-    this.updateTask()
   }
 
   updateHour = (hr) => {
@@ -88,6 +88,7 @@ export default class App extends Component {
   }
 
   updateTask = () => {
+    console.log("YOU STARTED UPDATE TASK!")
     console.log("The task is currently", this.state.task)
     let next = this.state.task
     let found = false
@@ -98,16 +99,16 @@ export default class App extends Component {
         found = this.state.todos.some(val => val.id === next)
         console.log('FOUND is', found)
       } 
-      
     }
     this.setState({
       task: next,
-      stop: true,
+      stop: !this.state.stop,
     })
     console.log("Now the task is", this.state.task)
   }
 
   startTask = () =>{
+    console.log("YOU'VE ENTERED THE STARTTASK FUNCTION")
     if (this.state.task === 0){
       console.log("The starting task was", this.state.task)
       this.setState({
@@ -128,7 +129,6 @@ export default class App extends Component {
 
   stopTimer = () => {
     this.setState({
-      //task: this.state.task,
       stop: !this.state.stop,
       start: !this.state.start
     })
@@ -137,18 +137,22 @@ export default class App extends Component {
   render() {
     return (
       <View style={[styles.appContainer, styles.fill]}>
-        <Text>
-          Todo Count: {
-            this.state.todos.length
-          }
-        </Text>
-        <Text>
-          Unchecked Todo Count: {
-            this.state.todos.filter(todo => !todo.checked).length
-          }
-        </Text>
-        <Button title="Begin" onPress={() => this.startTask()} />
-        <Button title="Stop" onPress={() => this.stopTimer()} />
+        <View style={styles.counterContainer}>
+          <Text style={styles.text}>
+            Todo Count: {
+              this.state.todos.length
+            }
+          </Text>
+          <Text style={styles.text}>
+            Unchecked Todo Count: {
+              this.state.todos.filter(todo => !todo.checked).length
+            }
+          </Text>
+        </View>
+        <View style={styles.todoContainer}>
+          <Button title="Begin" buttonStyle={styles.buttons} onPress={() => this.startTask()} />
+          <Button title="Stop" buttonStyle={styles.buttons} onPress={() => this.stopTimer()} />
+        </View>
         <ScrollView>
           {this.state.todos.map(todo => ( 
             <View>
@@ -182,16 +186,31 @@ export default class App extends Component {
 const styles = StyleSheet.create({
   todoContainer: {
     flexDirection: "row",
-    alignItems: "center"
+    justifyContent: 'center'
+  },
+  counterContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    margin: 10,
   },
   appContainer: {
     paddingTop: Constants.statusBarHeight,
   },
   fill: {
     flex: 1,
+    backgroundColor: '#222222'
   },
   input: {
     borderColor: 'black',
     borderWidth: 1,
+    backgroundColor: 'white'
   },
+  buttons: {
+    //flexDirection: "row",
+    width: 100,
+    margin: 10
+  },
+  text: {
+    color: '#f3f4f4'
+  }
 })

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import {KeyboardAvoidingView, Button, TextInput, Text, StyleSheet, View} from 'react-native';
+import {KeyboardAvoidingView, TextInput, Text, StyleSheet, View} from 'react-native';
+import {Button, FormLabel, FormInput, FormValidationMethod} from 'react-native-elements'
 import {Constants} from 'expo';
 
 export default class App extends Component {
@@ -7,13 +8,15 @@ export default class App extends Component {
   render() {
     return (
       <KeyboardAvoidingView behavior='padding'>
-        <Text style={styles.titles}>Set a Timer:</Text>
+        <View style={styles.todoContainer}>
+          <Text style={styles.titles}>Set a Timer:</Text>
 
-        <TextInput keyboardType='numeric' style={styles.timerInput} placeholder='Hours' value={this.props.todoItem.hr} onChangeText={this.props.updateHour} controlled={true} />
+          <TextInput keyboardType='numeric' style={styles.timerInput} placeholder='Hours' value={this.props.todoItem.hr} onChangeText={this.props.updateHour} controlled={true} />
 
-        <TextInput keyboardType='numeric' style={styles.timerInput} placeholder='Minutes' value={this.props.todoItem.min} onChangeText={this.props.updateMin} controlled={true} />
+          <TextInput keyboardType='numeric' style={styles.timerInput} placeholder='Minutes' value={this.props.todoItem.min} onChangeText={this.props.updateMin} controlled={true} />
+        </View>
 
-        <TextInput style={styles.input} value={this.props.todoItem.text} onChangeText={this.props.changeText} clearButtonMode="always" />
+        <TextInput style={styles.input} placeholder="What do need to do?" value={this.props.todoItem.text} onChangeText={this.props.changeText} clearButtonMode="always" />
 
         <View style={styles.bottomButton}>
             <Button onPress={this.props.addItem} title="Add item" style={styles.bottomButton} />
@@ -39,21 +42,33 @@ const styles = StyleSheet.create({
   input: {
     borderColor: 'black',
     borderWidth: 1,
+    borderRadius: 5,
     height: 40,
     padding: 10,
-    margin: 10
+    margin: 10,
+    backgroundColor: '#f3f4f4'
   },
   timerInput: {
     flexDirection: 'row',
     borderColor: 'black',
     borderWidth: 1,
+    borderRadius: 5,
     width: 80,
-    margin: 10
+    margin: 10,
+    padding: 5,
+    backgroundColor: '#f3f4f4'
     },
-    titles : {
-        margin: 10
+  titles : {
+        margin: 10,
+        color: "#f3f4f4"
     },
   bottomButton: {
-    margin: 50,
+    marginTop: 10,
+    marginBottom: 30,
+    flexDirection: "row",
+    justifyContent: "center"
+  },
+  text: {
+    color: '#f3f4f4'
   }
 })
