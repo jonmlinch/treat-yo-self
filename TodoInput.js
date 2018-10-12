@@ -3,7 +3,7 @@ import {KeyboardAvoidingView, TextInput, Text, StyleSheet, View} from 'react-nat
 import {Button, FormLabel, FormInput, FormValidationMethod} from 'react-native-elements'
 import {Constants} from 'expo';
 
-export default class App extends Component {
+export default class TodoInput extends Component {
   
   render() {
     return (
@@ -11,12 +11,12 @@ export default class App extends Component {
         <View style={styles.todoContainer}>
           <Text style={styles.titles}>Set a Timer:</Text>
 
-          <TextInput keyboardType='numeric' style={styles.timerInput} placeholder='Hours' value={this.props.todoItem.hr} onChangeText={this.props.updateHour} controlled={true} />
+          <TextInput keyboardType='numeric' style={styles.timerInput} placeholder='Hours' value={this.props.todoItem.hr} onChangeText={this.props.updateHour} controlled={true} returnKeyType='done' />
 
-          <TextInput keyboardType='numeric' style={styles.timerInput} placeholder='Minutes' value={this.props.todoItem.min} onChangeText={this.props.updateMin} controlled={true} />
+          <TextInput keyboardType='numeric' style={styles.timerInput} placeholder='Minutes' value={this.props.todoItem.min} onChangeText={this.props.updateMin} controlled={true} returnKeyType='done'/>
         </View>
 
-        <TextInput style={styles.input} placeholder="What do need to do?" value={this.props.todoItem.text} onChangeText={this.props.changeText} clearButtonMode="always" />
+        <TextInput style={styles.input} placeholder="What do need to do?" value={this.props.todoItem.text} onChangeText={this.props.changeText} clearButtonMode="always" returnKeyType='done'/>
 
         <View style={styles.bottomButton}>
             <Button onPress={this.props.addItem} title="Add item" style={styles.bottomButton} />

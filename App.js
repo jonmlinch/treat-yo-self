@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import {View, Text, ScrollView, StyleSheet} from 'react-native';
+import {Alert, View, Text, ScrollView, StyleSheet} from 'react-native';
 import {Button} from 'react-native-elements'
 import {Constants} from 'expo';
 import Task from './Task';
@@ -13,8 +13,8 @@ export default class App extends Component {
     this.state = {
       todos: [],
       text: '',
-      hr: 0,
-      min: 0,
+      hr: '',
+      min: '',
       sec: 0,
       task: 0,
       stop: true,
@@ -25,13 +25,20 @@ export default class App extends Component {
   submitAndClear = () => {
     this.setState({
       text: '',
-      hr: 0,
-      min: 0,
+      hr: '',
+      min: '',
       sec: 0,
     })
   }
 
+  showAlert = () => {
+    Alert.alert('Please enter a number for both hours and minutes!')
+  }
+
   addToDo() {
+    if (this.state.hr === NaN || this.state.min === NaN) {
+      this.showAlert()
+    }
     id++
     const text = this.state.text
     const hr = this.state.hr
@@ -59,8 +66,8 @@ export default class App extends Component {
           id: todo.id,
           text: todo.text,
           checked: !todo.checked,
-          hr: 0,
-          min: 0,
+          hr: '',
+          min: '',
           sec: 0,
         }
       }),
@@ -96,16 +103,18 @@ export default class App extends Component {
     let next = this.state.task
     let found = false
     while (!found){
-      if (next <= this.state.todos.length) {
+      if (next < this.state.todos.length) {
         next++
         console.log("NEXT is", next)
         found = this.state.todos.some(val => val.id === next)
         console.log('FOUND is', found)
-      } 
+      } else {
+        break
+      }
     }
     this.setState({
       task: next,
-      stop: !this.state.stop,
+      stop: true,
     })
     console.log("Now the task is", this.state.task)
   }
@@ -160,7 +169,6 @@ export default class App extends Component {
         </View>
         <ScrollView>
           {this.state.todos.map(todo => ( 
-            <View>
               <Task 
                 onToggle={() => this.toggleToDo(todo.id)}
                 onDelete={() => this.removeToDo(todo.id)}
@@ -171,7 +179,6 @@ export default class App extends Component {
                 stop={this.state.stop}
                 start={this.state.start}
               />
-            </View>
           ))}
         </ScrollView>
         <TodoInput 
@@ -211,7 +218,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'white'
   },
   buttons: {
-    //flexDirection: "row",
     width: 100,
     margin: 10
   },

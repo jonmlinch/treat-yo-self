@@ -1,7 +1,6 @@
 import React, { Component } from 'react';
 import {View, Button, StyleSheet, Switch} from 'react-native';
 import {Card, Text} from 'react-native-elements'
-import {Constants} from 'expo';
 
 class TodoTask extends Component {
   constructor(props){
@@ -33,6 +32,7 @@ export default TodoTask;
     todoContainer: {
       flexDirection: "row",
       justifyContent: "space-between",
+      marginLeft: 60,
     },
     clock: {
       flexDirection: "row",
